@@ -13,6 +13,9 @@ export default defineConfig({
 			resolvers: [ElementPlusResolver()],
 		}),
 		Components({
+			dirs: ['src/components'],
+			extensions: ['vue'],
+			deep: true,
 			resolvers: [ElementPlusResolver()],
 		}),
 	]

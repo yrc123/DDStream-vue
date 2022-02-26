@@ -1,17 +1,24 @@
 <script setup>
+	import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router';
+	const route = useRoute()
+	let path = computed((index) => route.path + index)
+	function getIndex(index) {
+		return route.path + index
+	}
 </script>
 
 <template>
     <el-scrollbar style="border-right: solid 1px #e6e6e6;">
-		<el-menu :default-openeds="['1', '3']" style="border-right:none;">
+		<el-menu :router=true style="border-right:none;" @select="test">
           <el-sub-menu index="1">
             <template #title>
               <el-icon><message /></el-icon>Navigator One
             </template>
             <el-menu-item-group>
               <template #title>Group 1</template>
-              <el-menu-item index="1-1">Option 1</el-menu-item>
-              <el-menu-item index="1-2">Option 2</el-menu-item>
+              <el-menu-item index="">Option 1</el-menu-item>
+              <el-menu-item :index="getIndex('/test')">Option 2</el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="Group 2">
               <el-menu-item index="1-3">Option 3</el-menu-item>

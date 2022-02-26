@@ -1,7 +1,4 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-import SideBar from './components/SideBar.vue'
-import Header from './components/Header.vue'
 </script>
 
 <template>
@@ -11,16 +8,16 @@ import Header from './components/Header.vue'
 		</el-header>
 		<el-container style="overflow:hidden">
 			<el-aside :span="3">
-				 <SideBar />
+				 <SideBar/>
 			</el-aside>
 			<el-container>
-				<el-scrollbar>
-					<el-main>Main
-					<div style="height:1000px"></div>
-				</el-main>
+				<el-scrollbar style="width: 100%;">
+					<el-main>
+						<router-view></router-view>
+					</el-main>
+					<el-divider></el-divider>
+					<el-footer>Footer</el-footer>
 				</el-scrollbar>
-				
-				<el-footer>Footer</el-footer>
 			</el-container>
 		</el-container>
 	</el-container>
