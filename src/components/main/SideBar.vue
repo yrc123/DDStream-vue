@@ -1,6 +1,6 @@
 <script setup>
 	import { computed, ref } from 'vue'
-import { useRoute } from 'vue-router';
+	import { useRoute } from 'vue-router';
 	const route = useRoute()
 	let path = computed((index) => route.path + index)
 	function getIndex(index) {

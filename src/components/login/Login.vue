@@ -1,44 +1,64 @@
 <script setup>
 	import { reactive, ref } from 'vue';
 	import { useRouter } from 'vue-router';
+	import service from 'apis/api'
+	import { paths } from '@/router/index'
+
 	const router = useRouter()
+	const formRef = ref()
+	const isLoading = ref(false)
 
 	function toForget() {
-		router.push('/forget')
+		router.push(paths.forget)
 	}
 	function toRegister() {
-		router.push('/register')
+		router.push(paths.register)
 	}
 	const loginEntity = reactive({
 		username: "",
 		password: "",
 		rememberMe: false,
 	})
-	const isLoading = ref(false)
+	function submit(formRef, data) {
+		if (!formRef) return
+		formRef.validate((valid) => {
+			if (valid) {
+				isLoading.value = true
+				service.login(data, () =>{
+					router.back()
+				},
+				() => {
+					isLoading.value = false
+				})
+			} else {
+				return false
+			}
+		})
+	}
 	const rules = reactive({
 		username: [
 			{
 				required: true,
-				message: 'Please input Activity name',
+				message: '内容不得为空',
 				trigger: 'blur',
 			},
 			{
 				min: 3,
 				max: 20,
-				message: 'Length should be 3 to 20',
+				message: '长度应为 3 到 20',
 				trigger: 'blur',
 			},
 		],
 		password: [
 			{
 				required: true,
-				message: 'Please input Activity name',
+				message: '内容不得为空',
 				trigger: 'blur',
 			},
 			{
 				min: 8,
 				max: 128,
-				message: 'Length should be 8 ',
+				message: '长度应大于 8',
 				trigger: 'blur',
 			},
 		],
@@ -70,7 +90,7 @@
 			</div>
 		</el-form-item>
 		<div class="button-box">
-			<el-button :loading="isLoading" type="primary">登录</el-button>
+			<el-button @click="submit(formRef, loginEntity)" :loading="isLoading" type="primary">登录</el-button>
 			<el-button @click="toRegister">注册</el-button>
 		</div>
 	</el-form>
