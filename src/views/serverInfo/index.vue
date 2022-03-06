@@ -1,0 +1,29 @@
+<script setup>
+import { reactive, ref } from "@vue/reactivity";
+import ServerCard from "components/serverInfo/ServerCard.vue";
+import service from "apis/api"
+	const clients = ref([])
+	service.getClientList()
+		.then((res) => {
+			clients.value = res.data
+		})
+
+
+</script>
+<template>
+	<div class="server-box">
+		<el-space wrap>
+			<ServerCard 
+				v-for="client in clients" 
+				:key="client.id"
+				:client="client"
+			/>
+		</el-space>
+	</div>
+</template>
+<style scoped>
+.server-box {
+	display: flex;
+	flex-wrap: wrap;
+}
+</style>

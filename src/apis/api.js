@@ -10,6 +10,19 @@ const login = (data, afterMessage, afterAll) => {
 			afterAll()
 		})
 }
+
+const getUserInfo = (data) => {
+	return instance.get(`/users/${data.userId}`)
+}
+const getClientActuator = (data) => {
+	return instance.get(`/actuator/${data.clientId}`)
+}
+const getClientList = () => {
+	return instance.get(`/clients`)
+}
 export default {
-	login
+	login,
+	getUserInfo,
+	getClientActuator,
+	getClientList,
 }

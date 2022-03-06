@@ -2,7 +2,9 @@ import { defineConfig } from 'vite'
 import path from 'path'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
+import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'
+import IconsResolver  from  'unplugin-icons/resolver' 
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 
@@ -21,13 +23,30 @@ export default defineConfig({
 	plugins: [
 		vue(),
 		AutoImport({
-			resolvers: [ElementPlusResolver()],
+			resolvers: [
+				ElementPlusResolver(),
+				IconsResolver({
+					prefix: 'Icon',
+				}),
+			],
 		}),
 		Components({
 			dirs: ['src/components'],
 			extensions: ['vue'],
 			deep: true,
-			resolvers: [ElementPlusResolver()],
+			resolvers: [
+				ElementPlusResolver(),
+				IconsResolver({
+					enabledCollections: [
+						'ep',
+						'clarity'
+					],
+				}),
+			],
+		}),
+
+		Icons({
+			autoInstall: true,
 		}),
 	]
 })

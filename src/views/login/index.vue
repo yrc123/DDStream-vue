@@ -1,7 +1,7 @@
 <script setup>
 	import { reactive, ref } from 'vue';
 	import user from "assets/default-user.png"
-	import Typewriter from "../../components/Typewriter.vue"
+	import Typewriter from "components/Typewriter.vue"
 	const typeTexts = ref([
 		'hello world!!!',
 	])

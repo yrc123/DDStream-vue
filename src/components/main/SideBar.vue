@@ -18,7 +18,7 @@
             <el-menu-item-group>
               <template #title>Group 1</template>
               <el-menu-item index="">Option 1</el-menu-item>
-              <el-menu-item :index="getIndex('/test')">Option 2</el-menu-item>
+              <el-menu-item :index="getIndex('/servers')">Option 2</el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="Group 2">
               <el-menu-item index="1-3">Option 3</el-menu-item>
