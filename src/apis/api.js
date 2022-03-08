@@ -1,14 +1,10 @@
 import instance from "apis/index";
-import Message from "js/Message";
 
-const login = (data, afterMessage, afterAll) => {
-	instance.post('/auth/login',data)
-		.then((res) => {
-			Message.success("登录成功",afterMessage)
-		})
-		.finally(() => {
-			afterAll()
-		})
+const login = (data) => {
+	return instance.post('/auth/login',data)
+}
+const logout = () => {
+	return instance.get('/auth/logout')
 }
 
 const getUserInfo = (data) => {
@@ -20,9 +16,14 @@ const getClientActuator = (data) => {
 const getClientList = () => {
 	return instance.get(`/clients`)
 }
+const getInfo = () => {
+	return instance.get(`/info`)
+}
 export default {
 	login,
+	logout,
 	getUserInfo,
 	getClientActuator,
 	getClientList,
+	getInfo,
 }

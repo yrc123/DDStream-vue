@@ -4,12 +4,12 @@
 	const route = useRoute()
 	let path = computed((index) => route.path + index)
 	function getIndex(index) {
-		return route.path + index
+		return 'console' + index
 	}
 </script>
 
 <template>
-    <el-scrollbar style="border-right: solid 1px #e6e6e6;">
+    <el-scrollbar class="scrollbar" style="">
 		<el-menu :router=true style="border-right:none;" @select="test">
           <el-sub-menu index="1">
             <template #title>
@@ -17,8 +17,8 @@
             </template>
             <el-menu-item-group>
               <template #title>Group 1</template>
-              <el-menu-item index="">Option 1</el-menu-item>
-              <el-menu-item :index="getIndex('/servers')">Option 2</el-menu-item>
+              <el-menu-item index="/console">首页</el-menu-item>
+              <el-menu-item index="/console/servers">服务</el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="Group 2">
               <el-menu-item index="1-3">Option 3</el-menu-item>
@@ -67,8 +67,8 @@
 </template>
 
 <style scoped>
-el-scrollbar{
-	height: 100%;
+.scrollbar {
+	border-right: solid 1px #e6e6e6;
 }
 
 </style>

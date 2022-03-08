@@ -3,6 +3,8 @@
 	import { useRouter } from 'vue-router';
 	import service from 'apis/api'
 	import { paths } from '@/router/index'
+	import Message from "js/Message";
+	import instance from "apis/index";
 
 	const router = useRouter()
 	const formRef = ref()
@@ -24,12 +26,18 @@
 		formRef.validate((valid) => {
 			if (valid) {
 				isLoading.value = true
-				service.login(data, () =>{
-					router.back()
-				},
-				() => {
-					isLoading.value = false
-				})
+				service.login(data)
+					.then((res) => {
+						Message.success("登录成功", () => router.back())
+						if (loginEntity.rememberMe) {
+							localStorage.setItem("satoken", res.data)
+						} else {
+							sessionStorage.setItem("satoken", res.data)
+						}
+					})
+					.finally(() => {
+						isLoading.value = false
+					})
 			} else {
 				return false
 			}

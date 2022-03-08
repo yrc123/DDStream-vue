@@ -24,10 +24,7 @@
 </template>
 
 <style scoped>
-.el-header {
-  position: relative;
-  background-color: #b3c0d1;
-  color: var(--el-text-color-primary);
+.el-header{
+	padding:0
 }
-
 </style>
