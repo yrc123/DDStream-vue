@@ -27,4 +27,7 @@
 .el-header{
 	padding:0
 }
+.el-main {
+    min-height: calc(100vh - 160px);
+}
 </style>

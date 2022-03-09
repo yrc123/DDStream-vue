@@ -35,7 +35,7 @@
 							sessionStorage.setItem("satoken", res.data)
 						}
 					})
-					.finally(() => {
+					.catch(() => {
 						isLoading.value = false
 					})
 			} else {
@@ -94,7 +94,6 @@
 				>
 				</el-switch>
 				<el-link @click="toForget">忘记密码</el-link>
-				<!-- <router-link class="el-link" to="/forget"></router-link> -->
 			</div>
 		</el-form-item>
 		<div class="button-box">

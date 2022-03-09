@@ -16,6 +16,12 @@ const getClientActuator = (data) => {
 const getClientList = () => {
 	return instance.get(`/clients`)
 }
+const updateClient = (data) => {
+	return instance.patch(`/clients/${data.id}`, data)
+}
+const deleteClient = (data) => {
+	return instance.delete(`/clients/${data.clientId}`)
+}
 const getInfo = () => {
 	return instance.get(`/info`)
 }
@@ -25,5 +31,7 @@ export default {
 	getUserInfo,
 	getClientActuator,
 	getClientList,
+	updateClient,
+	deleteClient,
 	getInfo,
 }

@@ -1,16 +1,20 @@
 <script setup>
 import { markRaw, reactive, ref, shallowRef } from "@vue/reactivity";
 import { computed } from "@vue/runtime-core";
+import { openConfirmBox } from "js/common"
+import _ from 'lodash'
 import ServerCardInfo from "./ServerCardInfo.vue";
 import ServerCardDetail from "./ServerCardDetail.vue"
+import ServerEditForm from "./ServerEditForm.vue";
 
 	const props = defineProps({
 		client:{
 			type: Object
 		}
 	})
-	const notDetail = ref(true)
 
+	const emits = defineEmits(['updated'])
+	const notDetail = ref(true)
 	const cardClass = reactive({
 		'not-detail-box': notDetail,
 	})
@@ -21,26 +25,56 @@ import ServerCardDetail from "./ServerCardDetail.vue"
 			notDetail.value = true
 		}
 	}
+	const formVisible = reactive({
+			flag:false
+		})
+	const confirmBox = () => {
+		//TODO: 完成删除接口
+		openConfirmBox("确认删除？相关记录将会被级联删除！",()=>{
+			emits('updated')
+		}, ()=>{
+
+		})
+	}
 </script>
 <template>
 	<el-card class="detail-box" body-style="display: flex" :class="cardClass" @click="changeCardMode">
-		<ServerCardInfo style="width:335px" :client="props.client" />
-		<transition name="el-fade-in">
-			<div v-if="!notDetail">
-				<ServerCardDetail style="width:570px" :clientId="props.client.id" />
+		<template #header>
+			<div class="card-header">
+				<span>{{ client.id }}</span>
+				<div class="button-box">
+					<el-button type="primary" circle plain @click.stop="formVisible.flag = true"><el-icon><i-ep-edit /></el-icon></el-button>
+					<el-button type="danger" circle plain @click.stop="confirmBox"><el-icon><i-ep-delete /></el-icon></el-button>
+				</div>
 			</div>
-		</transition>
+		</template>
+		<div class="card-body">
+			<ServerCardInfo style="width:335px" :client="props.client" />
+			<transition name="el-fade-in">
+				<div v-if="!notDetail">
+					<ServerCardDetail style="width:570px" :clientId="props.client.id" />
+				</div>
+			</transition>
+		</div>
 	</el-card>
+	<ServerEditForm :client="props.client" :formVisible="formVisible" @updated="emits('updated')"/>
 </template>
 <style scoped>
 .detail-box {
-	display: flex;
 	flex-direction: row;
-	/* justify-content: left; */
-	height: 175px;
 	width: 1000px;
 	overflow: hidden;
 }
+.card-body{
+	display: flex;
+	flex-direction: row;
+}
+.card-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
 .not-detail-box {
 	width: 385px
 }

@@ -36,6 +36,9 @@ import { computed } from '@vue/runtime-core';
 				})
 		}
 	}
+	function toSetting() {
+		router.push('/setting')
+	}
 	function logout() {
 		service.logout()
 			.then((res) => {

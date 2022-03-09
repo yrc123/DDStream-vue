@@ -21,9 +21,31 @@
 			</div>
 		</div>
 		<div class="text-box">
-			<div class="nickname-p"> {{ client.nickname }} </div>
+			<el-popover
+				placement="bottom"
+				title="服务器名"
+				:width="200"
+				trigger="hover"
+				:disabled="client.nickname.length <= 7"
+				:content="client.nickname"
+			>
+				<template #reference>
+					<div class="nickname-p hide-overflow-box"> {{ client.nickname }} </div>
+				</template>
+			</el-popover>
 			<div> 地址： {{ client.hostname }} </div>
-			<div> 备注： {{ client.note }} </div>
+			<el-popover
+				placement="bottom"
+				title="备注"
+				:width="200"
+				trigger="hover"
+				:disabled="client.note.length <= 7"
+				:content="client.note"
+			>
+				<template #reference>
+					<div class="hide-overflow-box"> 备注： {{ client.note }} </div>
+				</template>
+			</el-popover>
 		</div>
 	</div>
 </template>
@@ -58,5 +80,11 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
+}
+.hide-overflow-box {
+	overflow: hidden;
+    text-overflow: ellipsis;
+    width: 7em;
+    white-space: nowrap;
 }
 </style>

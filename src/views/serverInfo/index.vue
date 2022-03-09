@@ -2,11 +2,18 @@
 import { reactive, ref } from "@vue/reactivity";
 import ServerCard from "components/serverInfo/ServerCard.vue";
 import service from "apis/api"
+import { onMounted } from "@vue/runtime-core";
+
 	const clients = ref([])
-	service.getClientList()
-		.then((res) => {
-			clients.value = res.data
-		})
+	function getClientList() {
+		service.getClientList()
+			.then((res) => {
+				clients.value = res.data
+			})
+	}
+	onMounted(() => {
+		getClientList()
+	})
 
 
 </script>
@@ -17,6 +24,7 @@ import service from "apis/api"
 				v-for="client in clients" 
 				:key="client.id"
 				:client="client"
+				@updated="getClientList()"
 			/>
 		</el-space>
 	</div>
