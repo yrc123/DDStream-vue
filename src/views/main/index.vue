@@ -1,4 +1,7 @@
 <script setup>
+import { ref } from "@vue/reactivity";
+
+	const isLoading = ref(true)
 </script>
 
 <template>
@@ -11,9 +14,9 @@
 				 <SideBar/>
 			</el-aside>
 			<el-container>
-				<el-scrollbar style="width: 100%;">
-					<el-main>
-						<router-view></router-view>
+				<el-scrollbar class="main-scrollbar" view-class="scrollbar-view">
+					<el-main v-loading="isLoading">
+						<router-view @after-loaded="isLoading = false" @before-loaded="isLoading = true"></router-view>
 					</el-main>
 					<el-divider></el-divider>
 					<el-footer>Footer</el-footer>
@@ -28,6 +31,17 @@
 	padding:0
 }
 .el-main {
-    min-height: calc(100vh - 160px);
+	flex-grow: 1;
+    flex-shrink: 0;
 }
+.main-scrollbar {
+	width: 100%;
+}
+.main-scrollbar >>> .scrollbar-view {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+</style>
+<style>
 </style>

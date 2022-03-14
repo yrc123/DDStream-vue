@@ -1,9 +1,12 @@
 <script setup>
 import { ref } from 'vue'
 
-defineProps({
-  msg: String
-})
+	defineProps({
+		msg: String
+	})
+	const emits = defineEmits(['beforeLoaded','afterLoaded'])
+	emits('beforeLoaded')
+	emits('afterLoaded')
 
 const count = ref(0)
 </script>

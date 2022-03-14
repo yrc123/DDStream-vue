@@ -22,8 +22,26 @@ const updateClient = (data) => {
 const deleteClient = (data) => {
 	return instance.delete(`/clients/${data.clientId}`)
 }
+const listRoles = () => {
+	return instance.get(`/roles`)
+}
 const getInfo = () => {
 	return instance.get(`/info`)
+}
+const listUsers = (data) => {
+	return instance.post(`/users:search`, data)
+}
+const addUser = (data) => {
+	return instance.post(`/users`, data)
+}
+const deleteUser = (data) => {
+	return instance.delete(`/users/${data.userId}`)
+}
+const deleteUsers = (data) => {
+	return instance.post(`/users:delete`, data.map((value) => value.id))
+}
+const updateUser = (data) => {
+	return instance.patch(`/users/${data.id}`, data)
 }
 export default {
 	login,
@@ -33,5 +51,11 @@ export default {
 	getClientList,
 	updateClient,
 	deleteClient,
+	listRoles,
 	getInfo,
+	addUser,
+	listUsers,
+	updateUser,
+	deleteUser,
+	deleteUsers,
 }

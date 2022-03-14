@@ -5,10 +5,15 @@ import service from "apis/api"
 import { onMounted } from "@vue/runtime-core";
 
 	const clients = ref([])
+	const emits = defineEmits(['beforeLoaded','afterLoaded'])
+	emits('beforeLoaded')
 	function getClientList() {
 		service.getClientList()
 			.then((res) => {
 				clients.value = res.data
+			})
+			.finally(() => {
+				emits('afterLoaded')
 			})
 	}
 	onMounted(() => {

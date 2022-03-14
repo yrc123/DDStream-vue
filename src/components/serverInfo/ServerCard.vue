@@ -2,7 +2,6 @@
 import { markRaw, reactive, ref, shallowRef } from "@vue/reactivity";
 import { computed } from "@vue/runtime-core";
 import { openConfirmBox } from "js/common"
-import _ from 'lodash'
 import ServerCardInfo from "./ServerCardInfo.vue";
 import ServerCardDetail from "./ServerCardDetail.vue"
 import ServerEditForm from "./ServerEditForm.vue";
@@ -26,8 +25,8 @@ import ServerEditForm from "./ServerEditForm.vue";
 		}
 	}
 	const formVisible = reactive({
-			flag:false
-		})
+		flag:false
+	})
 	const confirmBox = () => {
 		//TODO: 完成删除接口
 		openConfirmBox("确认删除？相关记录将会被级联删除！",()=>{
