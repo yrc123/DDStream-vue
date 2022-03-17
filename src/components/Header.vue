@@ -93,7 +93,7 @@ import { computed } from '@vue/runtime-core';
 	align-items: center;
 	justify-content: space-between;
 	border-bottom: 1px var(--el-border-color-base) solid;
-	height: 99%;
+	height: 100%;
 	padding: 0 40px;
 }
 .logo {

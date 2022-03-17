@@ -6,7 +6,6 @@ const login = (data) => {
 const logout = () => {
 	return instance.get('/auth/logout')
 }
-
 const getUserInfo = (data) => {
 	return instance.get(`/users/${data.userId}`)
 }
@@ -22,16 +21,13 @@ const updateClient = (data) => {
 const deleteClient = (data) => {
 	return instance.delete(`/clients/${data.clientId}`)
 }
-const listRoles = () => {
-	return instance.get(`/roles`)
-}
 const getInfo = () => {
 	return instance.get(`/info`)
 }
-const listUsers = (data) => {
+const searchUsers = (data) => {
 	return instance.post(`/users:search`, data)
 }
-const addUser = (data) => {
+const insertUser = (data) => {
 	return instance.post(`/users`, data)
 }
 const deleteUser = (data) => {
@@ -43,6 +39,24 @@ const deleteUsers = (data) => {
 const updateUser = (data) => {
 	return instance.patch(`/users/${data.id}`, data)
 }
+const listPermissions = () => {
+	return instance.get(`/permissions`)
+}
+const insertRole = (data) => {
+	return instance.post(`/roles`, data)
+}
+const listRoles = () => {
+	return instance.get(`/roles`)
+}
+const searchRoles = (data) => {
+	return instance.post(`/roles:search`, data)
+}
+const updateRole = (data) => {
+	return instance.patch(`/roles/${data.id}`, data)
+}
+const deleteRole = (data) => {
+	return instance.delete(`/users/${data.roleId}`)
+}
 export default {
 	login,
 	logout,
@@ -51,11 +65,16 @@ export default {
 	getClientList,
 	updateClient,
 	deleteClient,
-	listRoles,
 	getInfo,
-	addUser,
-	listUsers,
+	insertUser,
+	searchUsers,
 	updateUser,
 	deleteUser,
 	deleteUsers,
+	listPermissions,
+	insertRole,
+	listRoles,
+	searchRoles,
+	updateRole,
+	deleteRole,
 }

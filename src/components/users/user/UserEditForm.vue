@@ -62,7 +62,7 @@
 							isLoading.value = false
 						})
 				} else {
-					service.addUser(data)
+					service.insertUser(data)
 						.then((res) => {
 							Message.success("提交成功")
 							props.formVisible.flag = false

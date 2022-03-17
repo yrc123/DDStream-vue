@@ -39,7 +39,7 @@
 
 <style scoped>
 .scrollbar {
-	border-right: solid 1px #e6e6e6;
+	border-right: solid 1px var(--el-border-color);
 }
 
 </style>

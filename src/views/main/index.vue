@@ -42,6 +42,7 @@ import { ref } from "@vue/reactivity";
     height: 100%;
     flex-direction: column;
 }
-</style>
-<style>
+.el-header {
+	border-bottom: solid 1px var(--el-border-color);
+}
 </style>

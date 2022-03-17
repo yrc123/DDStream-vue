@@ -57,7 +57,7 @@
 			page: page
 		}
 		postData.searchMap[searchCondition.searchSelect] = searchCondition.searchInput
-		service.listUsers(postData)
+		service.searchUsers(postData)
 			.then((res) => {
 				tableLoading.value = false
 				tableData.value = res.data.records
@@ -66,7 +66,6 @@
 	}
 	const rolesRemote = ref([])
 	const rolesLoading = ref(true)
-	const rolesSelected = ref([])
 	function loadRoles(flag, index) {
 		if (flag == true) {
 			if (rolesRemote.value.length == 0) {
@@ -86,7 +85,7 @@
 			}
 		}
 	}
-	const updateRoles = _.debounce((index) => {
+	const updateUser = _.debounce((index) => {
 			service.updateUser(tableData.value[index])
 				.then((res) => {
 					Message.success("提交成功")
@@ -109,6 +108,7 @@
 	})
 	onMounted(() => {
 		getTableData()
+		loadRoles(true)
 	})
 
 </script>
@@ -168,16 +168,15 @@
 						v-model="tableData[scope.$index].roleList"
 						multiple
 						collapse-tags
-						collapse-tags-tooltip
 						filterable
 						placeholder="选择角色"
 						:loading="rolesLoading"
 						@visible-change="(flag) => loadRoles(flag, scope.$index)"
-						@change="updateRoles(scope.$index)"
+						@change="updateUser(scope.$index)"
 					>
 						<el-option
 							v-for="item in rolesRemote"
-							:key="item.value"
+							:key="item.key"
 							:label="item.label"
 							:value="item.value"
 						>

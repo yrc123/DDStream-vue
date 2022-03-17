@@ -10,7 +10,7 @@
   "dependencies": {
     "@element-plus/icons-vue": "^1.0.0",
     "axios": "^0.26.0",
-    "element-plus": "^2.0.3",
+    "element-plus": "^2.1.2",
     "lodash": "^4.17.21",
     "qs": "^6.10.3",
     "unplugin-icons": "^0.13.2",
