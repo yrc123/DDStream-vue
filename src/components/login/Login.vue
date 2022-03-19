@@ -5,6 +5,7 @@
 	import { paths } from '@/router/index'
 	import Message from "js/Message";
 	import instance from "apis/index";
+	import md5 from "js-md5"
 
 	const router = useRouter()
 	const formRef = ref()
@@ -19,6 +20,7 @@
 	const loginEntity = reactive({
 		username: "",
 		password: "",
+		showPassword: "",
 		rememberMe: false,
 	})
 	function submit(formRef, data) {
@@ -26,7 +28,7 @@
 		formRef.validate((valid) => {
 			if (valid) {
 				isLoading.value = true
-				//TODO: 加密密码
+				loginEntity.password = md5(loginEntity.showPassword)
 				service.login(data)
 					.then((res) => {
 						Message.success("登录成功", () => router.back())
@@ -58,7 +60,7 @@
 				trigger: 'blur',
 			},
 		],
-		password: [
+		showPassword: [
 			{
 				required: true,
 				message: '内容不得为空',
@@ -84,8 +86,8 @@
 		<el-form-item prop="username" label="用户名">
 			<el-input v-model="loginEntity.username" clearable />
 		</el-form-item>
-		<el-form-item prop="password" label="密码">
-			<el-input v-model="loginEntity.password" show-password />
+		<el-form-item prop="showPassword" label="密码">
+			<el-input v-model="loginEntity.showPassword" show-password />
 		</el-form-item>
 		<el-form-item>
 			<div class="remember-box">

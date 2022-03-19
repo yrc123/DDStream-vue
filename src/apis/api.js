@@ -57,6 +57,18 @@ const updateRole = (data) => {
 const deleteRole = (data) => {
 	return instance.delete(`/users/${data.roleId}`)
 }
+const getConfig = () => {
+	return instance.get(`/config`)
+}
+const updateConfig = (data) => {
+	return instance.patch(`/config`, data)
+}
+const updateKeyPair = () => {
+	return instance.get(`/config/key:reset`)
+}
+const updateOpenRegister = (data) => {
+	return instance.get(`/config/register/${data.open}`)
+}
 export default {
 	login,
 	logout,
@@ -77,4 +89,8 @@ export default {
 	searchRoles,
 	updateRole,
 	deleteRole,
+	getConfig,
+	updateConfig,
+	updateKeyPair,
+	updateOpenRegister,
 }

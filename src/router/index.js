@@ -3,6 +3,7 @@ import MainView from 'views/main/index.vue'
 import LoginView from 'views/login/index.vue'
 import UserView from 'views/users/user/index.vue'
 import RoleView from 'views/users/role/index.vue'
+import SettingView from 'views/setting/index.vue'
 import ServerCardView from 'views/serverInfo/index.vue'
 import HelloWorld from 'components/main/HelloWorld.vue'
 
@@ -12,6 +13,7 @@ const paths = {
 	user: "users",
 	role: "roles",
 	servers: "servers",
+	setting: "setting",
 }
 const routes = [
 	{
@@ -33,6 +35,10 @@ const routes = [
 			{
 				path: paths.role,
 				component: RoleView
+			},
+			{
+				path: paths.setting,
+				component: SettingView 
 			},
 		]
 	},
