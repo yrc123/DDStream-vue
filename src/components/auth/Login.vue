@@ -10,6 +10,7 @@
 	const router = useRouter()
 	const formRef = ref()
 	const isLoading = ref(false)
+	const emits = defineEmits(["changePage"])
 
 	function toForget() {
 		router.push(paths.forget)
@@ -101,7 +102,7 @@
 		</el-form-item>
 		<div class="button-box">
 			<el-button @click="submit(formRef, loginEntity)" :loading="isLoading" type="primary">登录</el-button>
-			<el-button @click="toRegister">注册</el-button>
+			<el-button @click="emits('changePage')">注册</el-button>
 		</div>
 	</el-form>
 </template>

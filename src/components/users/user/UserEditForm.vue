@@ -3,6 +3,7 @@
 	import service from 'apis/api'
 	import Message from "js/Message";
 	import _ from 'lodash'
+	import md5 from "js-md5"
 
 	const props = defineProps({
 		user: {
@@ -19,6 +20,7 @@
 	const title = ref("")
 	const isUpdate = ref()
 	const visible = props.formVisible
+	const passwordPlaceholder = ref()
 	watch(visible, (newValue, oldValue) => {
 		if (newValue.flag == true) {
 			if(props.type == "create") {
@@ -26,17 +28,24 @@
 					id: "",
 					username: "",
 					password: "",
+					showPassword: "",
 					nickname: "",
 					email: "",
 					roleList:[],
 				}	
 				title.value = "创建用户"
 				isUpdate.value = false
+				rules.value = insertRule 
+				passwordPlaceholder.value = ""
+				
 			} else if(props.type == "update") {
 				data.value = reactive(_.clone(props.user))
 				data.value.password = null 
+				data.value.showPassword = null
 				title.value = "修改用户"
 				isUpdate.value = true
+				rules.value = updateRule 
+				passwordPlaceholder.value = "保持不变"
 			}
 		}
 	},{
@@ -52,6 +61,9 @@
 			if (valid) {
 				isLoading.value = true
 				if (isUpdate.value) {
+					if (data.showPassword != null) {
+						data.password = md5(data.showPassword)
+					}
 					service.updateUser(data)
 						.then((res) => {
 							Message.success("提交成功")
@@ -62,6 +74,7 @@
 							isLoading.value = false
 						})
 				} else {
+					data.password = md5(data.showPassword)
 					service.insertUser(data)
 						.then((res) => {
 							Message.success("提交成功")
@@ -77,7 +90,34 @@
 			}
 		})
 	}
-	const rules = reactive({
+	const rules = ref()
+	const insertRule = {
+		username: [
+			{
+				required: true,
+				message: '内容不得为空',
+				trigger: 'blur',
+			},
+			{
+				min: 3,
+				max: 20,
+				message: '长度应为 3 到 20',
+				trigger: 'blur',
+			},
+		],
+		showPassword: [
+			{
+				required: true,
+				message: '内容不得为空',
+				trigger: 'blur',
+			},
+			{
+				min: 8,
+				max: 128,
+				message: '长度应大于 8',
+				trigger: 'blur',
+			},
+		],
 		nickname: [
 			{
 				required: true,
@@ -91,7 +131,39 @@
 				trigger: 'blur',
 			},
 		],
-		note : [
+		email: [
+			{
+				type: 'email'
+			}
+		],
+	}
+	const updateRule = {
+		username: [
+			{
+				required: true,
+				message: '内容不得为空',
+				trigger: 'blur',
+			},
+			{
+				min: 3,
+				max: 20,
+				message: '长度应为 3 到 20',
+				trigger: 'blur',
+			},
+		],
+		showPassword: [
+			{
+				message: '内容不得为空',
+				trigger: 'blur',
+			},
+			{
+				min: 8,
+				max: 128,
+				message: '长度应大于 8',
+				trigger: 'blur',
+			},
+		],
+		nickname: [
 			{
 				required: true,
 				message: '内容不得为空',
@@ -99,12 +171,18 @@
 			},
 			{
 				min: 1,
-				max: 128,
-				message: '长度应大于 128',
+				max: 16,
+				message: '长度应为 1 到 16',
 				trigger: 'blur',
 			},
 		],
-	})
+		email: [
+			{
+				type: 'email'
+			}
+		],
+	}
+
 </script>
 <template>
 	<el-dialog 
@@ -114,6 +192,7 @@
 		<el-form 
 			ref="formRef" 
 			:model="data" 
+			:rules="rules"
 			label-position="left"
 			label-width="auto"
 			>
@@ -126,12 +205,12 @@
 			<el-form-item prop="nickname" label="昵称">
 				<el-input v-model="data.nickname" />
 			</el-form-item>
-			<el-form-item prop="password" label="密码" >
+			<el-form-item prop="showPassword" label="密码" >
 				<el-input 
 					type="password" 
 					show-password
-					placeholder="保持不变"
-					v-model="data.password" />
+					:placeholder="passwordPlaceholder"
+					v-model="data.showPassword" />
 			</el-form-item>
 			<el-form-item prop="email" label="邮箱">
 				<el-input v-model="data.email" />

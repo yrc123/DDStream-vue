@@ -1,6 +1,6 @@
 import {createRouter, createWebHashHistory} from 'vue-router';
 import MainView from 'views/main/index.vue'
-import LoginView from 'views/login/index.vue'
+import AuthView from 'views/auth/index.vue'
 import UserView from 'views/users/user/index.vue'
 import RoleView from 'views/users/role/index.vue'
 import SettingView from 'views/setting/index.vue'
@@ -9,11 +9,13 @@ import HelloWorld from 'components/main/HelloWorld.vue'
 
 const paths = {
 	console: "/console",
-	login: "/login",
 	user: "users",
 	role: "roles",
 	servers: "servers",
 	setting: "setting",
+	auth: "/auth",
+	login: "login",
+	register: "register",
 }
 const routes = [
 	{
@@ -43,8 +45,8 @@ const routes = [
 		]
 	},
 	{
-		path: paths.login,
-		component: LoginView
+		path: paths.auth,
+		component: AuthView,
 	},
 ]
 

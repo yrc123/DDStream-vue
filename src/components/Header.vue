@@ -81,7 +81,7 @@ import { computed } from '@vue/runtime-core';
 				</el-dropdown>
 			</template>
 			<template v-else>
-				<el-button @click="router.push(paths.login)">登录</el-button>
+				<el-button @click="router.push(paths.auth)">登录</el-button>
 			</template>
 		</div>
 	</div>

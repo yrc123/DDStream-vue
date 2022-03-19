@@ -6,6 +6,9 @@ const login = (data) => {
 const logout = () => {
 	return instance.get('/auth/logout')
 }
+const register = (data) => {
+	return instance.post('/auth/register',data)
+}
 const getUserInfo = (data) => {
 	return instance.get(`/users/${data.userId}`)
 }
@@ -72,6 +75,7 @@ const updateOpenRegister = (data) => {
 export default {
 	login,
 	logout,
+	register,
 	getUserInfo,
 	getClientActuator,
 	getClientList,
