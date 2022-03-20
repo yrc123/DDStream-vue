@@ -12,6 +12,9 @@ const register = (data) => {
 const safe = (data) => {
 	return instance.post('/auth/safe',data)
 }
+const setting = (data) => {
+	return instance.patch('/auth/setting',data)
+}
 const getUserInfo = (data) => {
 	return instance.get(`/users/${data.userId}`)
 }
@@ -80,6 +83,7 @@ export default {
 	logout,
 	register,
 	safe,
+	setting,
 	getUserInfo,
 	getClientActuator,
 	getClientList,

@@ -15,6 +15,9 @@ import { computed } from '@vue/runtime-core';
 			return ""
 		}
 	})
+	const settingFormVisible = ref({
+		flag: false,
+	})
 
 	function checkLogin() {
 		if (localStorage.hasOwnProperty('satoken') || 
@@ -36,8 +39,12 @@ import { computed } from '@vue/runtime-core';
 				})
 		}
 	}
-	function toSetting() {
-		router.push('/setting')
+	function showSetting() {
+		settingFormVisible.value.flag = true
+	}
+	function updateUserInfo() {
+		localStorage.removeItem("userInfo")
+		initUserInfo()
 	}
 	function logout() {
 		service.logout()
@@ -74,7 +81,7 @@ import { computed } from '@vue/runtime-core';
 					<el-avatar> {{ nickname }}  </el-avatar>
 					<template #dropdown>
 						<el-dropdown-menu>
-							<el-dropdown-item @click="toSetting">设置</el-dropdown-item>
+							<el-dropdown-item @click="showSetting">设置</el-dropdown-item>
 							<el-dropdown-item @click="logout">登出</el-dropdown-item>
 						</el-dropdown-menu>
 					</template>
@@ -85,6 +92,7 @@ import { computed } from '@vue/runtime-core';
 			</template>
 		</div>
 	</div>
+	<UserSetting  @updated="updateUserInfo" :formVisible="settingFormVisible"/>
 </template>
 
 <style scoped>
