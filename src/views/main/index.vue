@@ -37,7 +37,7 @@ import { ref } from "@vue/reactivity";
 .main-scrollbar {
 	width: 100%;
 }
-.main-scrollbar >>> .scrollbar-view {
+:deep(.scrollbar-view) {
     display: flex;
     height: 100%;
     flex-direction: column;

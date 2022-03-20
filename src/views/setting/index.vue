@@ -129,7 +129,7 @@
 .el-form {
 	width: 900px;
 }
-.el-form >>> label {
+:deep(label) {
     font-size: 15px;
     font-weight: bold;
 	line-height: 35px;
