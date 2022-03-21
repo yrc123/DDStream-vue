@@ -142,7 +142,7 @@
 						</el-select>
 					</template>
 					<template #append>
-						<el-tooltip content="刷新" effect="light" show-after="1000">
+						<el-tooltip content="刷新" effect="light" show-after=1000>
 							<el-button @click="getTableData">
 								<el-icon><i-ep-search /></el-icon>
 							</el-button>
@@ -188,12 +188,12 @@
 			</el-table-column>
 			<el-table-column fixed="right" label="操作" width="120">
 				<template #default="scope">
-					<el-tooltip content="编辑" effect="light" show-after="1000">
+					<el-tooltip content="编辑" effect="light" show-after=1000>
 						<el-button type="text" @click.stop="editBox(scope.$index)">
 							<el-icon><i-ep-edit /></el-icon>
 						</el-button>
 					</el-tooltip>
-					<el-tooltip content="删除" effect="light" show-after="1000">
+					<el-tooltip content="删除" effect="light" show-after=1000>
 						<el-button type="text" style="color:#f89898" @click.stop="deleteBox(scope.$index)">
 							<el-icon><i-ep-delete /></el-icon>
 						</el-button>

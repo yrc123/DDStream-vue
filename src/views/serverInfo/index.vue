@@ -29,6 +29,7 @@ import { onMounted } from "@vue/runtime-core";
 				v-for="client in clients" 
 				:key="client.id"
 				:client="client"
+				@refresh="getClientList()"
 				@updated="getClientList()"
 			/>
 		</el-space>

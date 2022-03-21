@@ -109,7 +109,7 @@
 		<el-form-item prop="showPassword" label="密码">
 			<el-input v-model="userEntity.showPassword" show-password />
 		</el-form-item>
-		<el-form-item prop="nickname" label="用户名">
+		<el-form-item prop="nickname" label="昵称">
 			<el-input v-model="userEntity.nickname" clearable />
 		</el-form-item>
 		<el-form-item prop="email" label="邮箱">
