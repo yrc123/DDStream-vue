@@ -21,7 +21,7 @@ const getUserInfo = (data) => {
 const getClientActuator = (data) => {
 	return instance.get(`/actuator/${data.clientId}`)
 }
-const getClientList = () => {
+const listClients = () => {
 	return instance.get(`/clients`)
 }
 const updateClient = (data) => {
@@ -78,6 +78,21 @@ const updateKeyPair = () => {
 const updateOpenRegister = (data) => {
 	return instance.get(`/config/register/${data.open}`)
 }
+const searchFFmpegLink = (data) => {
+	return instance.post(`/ffmpeg-link:search`, data)
+}
+const insertFFmpegLink = (data) => {
+	return instance.post(`/ffmpeg-link`, data)
+}
+const startFFmpegLink = (data) => {
+	return instance.get(`/ffmpeg-link/${data.id}:start`)
+}
+const stopFFmpegLink = (data) => {
+	return instance.get(`/ffmpeg-link/${data.id}:stop`)
+}
+const getFFmpegLinkStatus = (data) => {
+	return instance.get(`/ffmpeg-link/${data.id}:status`)
+}
 export default {
 	login,
 	logout,
@@ -86,7 +101,7 @@ export default {
 	setting,
 	getUserInfo,
 	getClientActuator,
-	getClientList,
+	listClients,
 	updateClient,
 	deleteClient,
 	getInfo,
@@ -105,4 +120,9 @@ export default {
 	updateConfig,
 	updateKeyPair,
 	updateOpenRegister,
+	insertFFmpegLink,
+	startFFmpegLink,
+	stopFFmpegLink,
+	getFFmpegLinkStatus,
+	searchFFmpegLink,
 }

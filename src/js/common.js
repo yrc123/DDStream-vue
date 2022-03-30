@@ -1,4 +1,3 @@
-
 export function openConfirmBox(message, afterConfirm, afterCancel){
 	ElMessageBox.confirm(
 		message,

@@ -7,8 +7,8 @@ import { onMounted } from "@vue/runtime-core";
 	const clients = ref([])
 	const emits = defineEmits(['beforeLoaded','afterLoaded'])
 	emits('beforeLoaded')
-	function getClientList() {
-		service.getClientList()
+	function listClients() {
+		service.listClients()
 			.then((res) => {
 				clients.value = res.data
 			})
@@ -17,7 +17,7 @@ import { onMounted } from "@vue/runtime-core";
 			})
 	}
 	onMounted(() => {
-		getClientList()
+		listClients()
 	})
 
 
@@ -29,8 +29,8 @@ import { onMounted } from "@vue/runtime-core";
 				v-for="client in clients" 
 				:key="client.id"
 				:client="client"
-				@refresh="getClientList()"
-				@updated="getClientList()"
+				@refresh="listClients()"
+				@updated="listClients()"
 			/>
 		</el-space>
 	</div>

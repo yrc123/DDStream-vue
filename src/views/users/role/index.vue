@@ -49,26 +49,23 @@
 	}
 	const permissionsRemote = ref([])
 	const permissionsLoading = ref(true)
-	function loadPermissions(flag, index) {
+	const loadPermissions = _.throttle((flag, index) => {
 		if (flag == true) {
-			if (permissionsRemote.value.length == 0) {
-				permissionsLoading.value = true
-				service.listPermissions()
-					.then((res) => {
-						console.log(res)
-						permissionsRemote.value = res.data
-							.map((value, index) => {
-								return {
-									key: index,
-									label: value.description,
-									value: value.id,
-								}
-							})
-							permissionsLoading.value = false
-					})
-			}
+			permissionsLoading.value = true
+			service.listPermissions()
+				.then((res) => {
+					permissionsRemote.value = res.data
+						.map((value, index) => {
+							return {
+								key: index,
+								label: value.description,
+								value: value.id,
+							}
+						})
+						permissionsLoading.value = false
+				})
 		}
-	}
+	}, 5000)
 	const updateRole = _.debounce((index) => {
 			service.updateRole(tableData.value[index])
 				.then((res) => {
@@ -157,6 +154,16 @@
 						</el-option>
 					</el-select>
 					</div>
+				</template>
+			</el-table-column>
+			<el-table-column label="创建时间"  show-overflow-tooltip>
+				<template #default="scope">
+					{{ new Date(scope.row.createTime).toLocaleString() }}
+				</template>
+			</el-table-column>
+			<el-table-column label="修改时间"  show-overflow-tooltip>
+				<template #default="scope">
+					{{ new Date(scope.row.updateTime).toLocaleString() }}
 				</template>
 			</el-table-column>
 			<el-table-column fixed="right" label="操作" width="120">

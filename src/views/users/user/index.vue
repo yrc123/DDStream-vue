@@ -66,7 +66,7 @@
 	}
 	const rolesRemote = ref([])
 	const rolesLoading = ref(true)
-	function loadRoles(flag, index) {
+	const loadRoles = _.throttle((flag, index) => {
 		if (flag == true) {
 			if (rolesRemote.value.length == 0) {
 				rolesLoading.value = true
@@ -84,7 +84,7 @@
 					})
 			}
 		}
-	}
+	}, 5000)
 	const updateUser = _.debounce((index) => {
 			service.updateUser(tableData.value[index])
 				.then((res) => {
@@ -184,6 +184,16 @@
 						>
 						</el-option>
 					</el-select>
+				</template>
+			</el-table-column>
+			<el-table-column label="创建时间"  show-overflow-tooltip>
+				<template #default="scope">
+					{{ new Date(scope.row.createTime).toLocaleString() }}
+				</template>
+			</el-table-column>
+			<el-table-column label="修改时间"  show-overflow-tooltip>
+				<template #default="scope">
+					{{ new Date(scope.row.updateTime).toLocaleString() }}
 				</template>
 			</el-table-column>
 			<el-table-column fixed="right" label="操作" width="120">

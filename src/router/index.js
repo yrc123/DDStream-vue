@@ -4,9 +4,11 @@ import AuthView from 'views/auth/index.vue'
 import UserView from 'views/users/user/index.vue'
 import RoleView from 'views/users/role/index.vue'
 import SafeView from 'views/safe/index.vue'
+import LinkView from 'views/link/index.vue'
 import SettingView from 'views/setting/index.vue'
 import ServerCardView from 'views/serverInfo/index.vue'
 import HelloWorld from 'components/main/HelloWorld.vue'
+import TestView from 'views/test/index.vue'
 
 const paths = {
 	console: "/console",
@@ -14,8 +16,12 @@ const paths = {
 	role: "roles",
 	servers: "servers",
 	setting: "setting",
+	links: "links",
 	auth: "/auth",
 	safe: "/safe",
+
+
+	test: "test",
 }
 const routes = [
 	{
@@ -39,8 +45,16 @@ const routes = [
 				component: RoleView
 			},
 			{
+				path: paths.links,
+				component: LinkView 
+			},
+			{
 				path: paths.setting,
 				component: SettingView 
+			},
+			{
+				path: paths.test,
+				component: TestView,
 			},
 		]
 	},
