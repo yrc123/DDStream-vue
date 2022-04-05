@@ -3,7 +3,6 @@
 	import service from 'apis/api'
 	import { ref } from "@vue/reactivity";
 	import Message from "js/Message";
-	import { paths } from '@/router/index'
 import { computed } from '@vue/runtime-core';
 
 	const router = useRouter()
@@ -88,7 +87,7 @@ import { computed } from '@vue/runtime-core';
 				</el-dropdown>
 			</template>
 			<template v-else>
-				<el-button @click="router.push(paths.auth)">登录</el-button>
+				<el-button @click="router.push({name: 'auth'})">登录</el-button>
 			</template>
 		</div>
 	</div>

@@ -5,65 +5,66 @@ import UserView from 'views/users/user/index.vue'
 import RoleView from 'views/users/role/index.vue'
 import SafeView from 'views/safe/index.vue'
 import LinkView from 'views/link/index.vue'
+import LinkEditView from 'views/link/LinkEdit.vue'
 import SettingView from 'views/setting/index.vue'
 import ServerCardView from 'views/serverInfo/index.vue'
 import HelloWorld from 'components/main/HelloWorld.vue'
-import TestView from 'views/test/index.vue'
 
-const paths = {
-	console: "/console",
-	user: "users",
-	role: "roles",
-	servers: "servers",
-	setting: "setting",
-	links: "links",
-	auth: "/auth",
-	safe: "/safe",
-
-
-	test: "test",
-}
 const routes = [
 	{
-		path: paths.console,
+		path: "/console",
 		component: MainView,
 		children: [
 			{
+				name: 'main',
 				path: '',
 				component: HelloWorld,
 			},
 			{
-				path: paths.servers,
+				name: 'servers',
+				path: 'servers',
 				component: ServerCardView,
 			},
 			{
-				path: paths.user,
+				name: 'users',
+				path: 'users',
 				component: UserView
 			},
 			{
-				path: paths.role,
+				name: 'roles',
+				path: 'roles',
 				component: RoleView
 			},
 			{
-				path: paths.links,
+				name: 'links',
+				path: 'links',
 				component: LinkView 
 			},
 			{
-				path: paths.setting,
+				name: 'setting',
+				path: 'setting',
 				component: SettingView 
 			},
 			{
-				path: paths.test,
-				component: TestView,
+				name: 'linksAdd',
+				path: 'links/add',
+				component: LinkEditView,
+			},
+			{
+				name: 'linksEdit',
+				path: 'links/:id',
+				component: LinkEditView,
 			},
 		]
 	},
 	{
-		path: paths.auth,
+		name: 'auth',
+		path: '/auth',
 		component: AuthView,
 	},
 	{
-		path: paths.safe,
+		name: 'safe',
+		path: '/safe',
 		component: SafeView,
 	},
 ]
@@ -74,6 +75,5 @@ const router = createRouter({
 })
 export default router
 export {
-	paths,
 	router
 }

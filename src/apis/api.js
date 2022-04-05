@@ -84,11 +84,20 @@ const searchFFmpegLink = (data) => {
 const insertFFmpegLink = (data) => {
 	return instance.post(`/ffmpeg-link`, data)
 }
+const updateFFmpegLink = (data) => {
+	return instance.patch(`/ffmpeg-link/${data.id}`, data)
+}
+const deleteFFmpegLink = (data) => {
+	return instance.delete(`/ffmpeg-link/${data.id}`)
+}
 const startFFmpegLink = (data) => {
 	return instance.get(`/ffmpeg-link/${data.id}:start`)
 }
 const stopFFmpegLink = (data) => {
 	return instance.get(`/ffmpeg-link/${data.id}:stop`)
+}
+const getFFmpegLink = (data) => {
+	return instance.get(`/ffmpeg-link/${data.id}`)
 }
 const getFFmpegLinkStatus = (data) => {
 	return instance.get(`/ffmpeg-link/${data.id}:status`)
@@ -121,8 +130,11 @@ export default {
 	updateKeyPair,
 	updateOpenRegister,
 	insertFFmpegLink,
+	updateFFmpegLink,
+	deleteFFmpegLink,
 	startFFmpegLink,
 	stopFFmpegLink,
+	getFFmpegLink,
 	getFFmpegLinkStatus,
 	searchFFmpegLink,
 }

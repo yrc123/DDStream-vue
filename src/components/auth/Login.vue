@@ -2,7 +2,6 @@
 	import { reactive, ref } from 'vue';
 	import { useRouter } from 'vue-router';
 	import service from 'apis/api'
-	import { paths } from '@/router/index'
 	import Message from "js/Message";
 	import instance from "apis/index";
 	import md5 from "js-md5"
@@ -13,10 +12,10 @@
 	const emits = defineEmits(["changePage"])
 
 	function toForget() {
-		router.push(paths.forget)
+		router.push({name: 'forget'})
 	}
 	function toRegister() {
-		router.push(paths.register)
+		router.push({name: 'register'})
 	}
 	const loginEntity = reactive({
 		username: "",

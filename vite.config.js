@@ -18,6 +18,7 @@ export default defineConfig({
 			"apis": path.resolve(__dirname, "src/apis"),
 			"js": path.resolve(__dirname, "src/js"),
 			"assets": path.resolve(__dirname, "src/assets"),
+			"router": path.resolve(__dirname, "src/router"),
 		},
 	},
 	plugins: [
