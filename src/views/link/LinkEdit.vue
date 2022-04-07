@@ -349,353 +349,364 @@
 	
 </script>
 <template>
-	<div class="button-top-box">
-		<div class="button-left-box">
-			<el-button type="primary" plain @click="addLinkItem()">添加推流节点</el-button>
-		</div>
-	</div>
-	<el-form 
-		ref="formRef" 
-		:model="data" 
-		label-position="left"
-		label-width="auto"
-	>
-		<el-form-item prop="complexInputUri" label="链路名">
-			<el-input v-model="data.name" placeholder="请输入链路名"/>
-		</el-form-item>
-		<el-collapse v-model="data.linkListCollapse">
-			<el-collapse-item 
-				v-for="(linkItem, linkIndex) in data.ffmpegList"
-				:key="linkIndex"
-				:name="linkIndex"
-				class="link-list-box"
-			>
-				<template #title>
-					<div class="item-list-title">
-						<div class="item-title">
-							推流节点 {{ linkIndex + 1 }}
-						</div>
-						<div>
-							<el-button type="primary" plain @click.stop="addOutputItem(linkIndex)">
-								添加输出流
-							</el-button>
-							<el-button 
-								type="danger" 
-								circle 
-								plain 
-								size="small"
-								@click.stop="removeLinkItem(index)"
-							>
-								<el-icon><i-ep-delete /></el-icon>
-							</el-button>
-						</div>
-					</div>
-				</template>
-				<el-form-item prop="simpleInputServer" label="输入流服务器">
-					<el-select
-						v-model="linkItem.clientId"
-						collapse-tags
-						filterable
-						placeholder="推流服务器"
-						:loading="clientsLoading"
-						@visible-change="(flag) => loadClient(flag)"
-					>
-						<el-option
-							v-for="item in clientsRemote"
-							:key="item.id"
-							:label="item.label"
-							:value="item.id"
-						>
-						</el-option>
-					</el-select>
+	<div class="link-form-box">
+		<el-form 
+			ref="formRef" 
+			:model="data" 
+			label-position="left"
+			label-width="100px"
+		>
+			<div class="link-name-box">
+				<el-form-item prop="complexInputUri" label="链路名" class="link-name-input">
+					<el-input v-model="data.name" placeholder="请输入链路名"/>
 				</el-form-item>
-				<el-collapse v-model="linkItem.linkItemCollapse">
-					<el-collapse-item name=0>
-						<template #title>
+				<el-button type="primary" plain @click="addLinkItem()">添加推流节点</el-button>
+			</div>
+			<el-collapse v-model="data.linkListCollapse">
+				<el-collapse-item 
+					v-for="(linkItem, linkIndex) in data.ffmpegList"
+					:key="linkIndex"
+					:name="linkIndex"
+					class="link-list-box"
+				>
+					<template #title>
+						<div class="item-list-title">
 							<div class="item-title">
-								代理
+								推流节点 {{ linkIndex + 1 }}
 							</div>
-						</template>
-						<div class="proxy-box">
-							<el-form-item prop="httpUrl" label="代理">
-								<el-input
-									v-model="linkItem.ffmpegConfig.config.ffmpegProxy.httpUrl"
-									placeholder="请输入代理url"
-									:disabled="linkItem.ffmpegConfig.config.ffmpegProxy.proxyType != 'HTTP_PROXY'"
-									class="input-with-select"
-								>
-									<template #prepend>
-										<el-select 
-											v-model="linkItem.ffmpegConfig.config.ffmpegProxy.proxyType" 
-											placeholder="选择代理模式" 
-											style="width: 150px"
-										>
-											<el-option
-												v-for="item in proxyType"
-												:key="item.key"
-												:label="item.label"
-												:value="item.value"
-											/>
-										</el-select>
-									</template>
-								</el-input>
-							</el-form-item>
-						</div>
-					</el-collapse-item>
-					<el-collapse-item name=1>
-						<template #title>
-							<div class="item-title">
-								输入流
-							</div>
-						</template>
-						<div class="input-box">
-							<div style="margin-top: 20px">
-								<el-radio-group v-model="linkItem.ffmpegConfig.config.ffmpegInput.showType" size="small">
-									<el-radio-button label="simple" >简易模式</el-radio-button>
-									<el-radio-button label="complex" >详细模式</el-radio-button>
-								</el-radio-group>
-							</div>
-							<template v-if="linkItem.ffmpegConfig.config.ffmpegInput.showType == 'simple'">
-								<el-form-item prop="complexInputUri" label="输入流地址">
-									<el-input v-model="linkItem.ffmpegConfig.config.ffmpegInput.inputUri" placeholder="预期地址" disabled/>
-								</el-form-item>
-								<el-form-item prop="simpleInputServer" label="输入流服务器">
-									<el-select
-										v-model="linkItem.ffmpegConfig.config.ffmpegInput.simple.ip"
-										collapse-tags
-										filterable
-										placeholder="推流服务器"
-										:loading="clientsLoading"
-										@visible-change="(flag) => loadClient(flag)"
-									>
-										<el-option
-											v-for="item in clientsRemote"
-											:key="item.key"
-											:label="item.label"
-											:value="item.value"
-										>
-										</el-option>
-									</el-select>
-								</el-form-item>
-								<el-form-item prop="simpleInputServer" label="输入流名称">
-									<el-input v-model="linkItem.ffmpegConfig.config.ffmpegInput.simple.name" placeholder="流名称" />
-								</el-form-item>
-								<el-form-item prop="simpleInputServer" label="输入协议">
-									<el-select v-model="linkItem.ffmpegConfig.config.ffmpegInput.simple.format" class="m-2" placeholder="选择输入流协议" size="large">
-										<el-option
-											v-for="item in formatType"
-											:key="item.key"
-											:label="item.label"
-											:value="item.value"
-										/>
-									</el-select>
-								</el-form-item>
-							</template>
-							<template v-else>
-								<el-form-item prop="complexInputUri" label="输入流地址">
-									<el-input v-model="linkItem.ffmpegConfig.config.ffmpegInput.inputUri" placeholder="请输入要推流视频地址" />
-								</el-form-item>
-							</template>
-							<el-form-item prop="rate" label="使用原生速率">
-								<el-switch
-									v-model="linkItem.ffmpegConfig.config.ffmpegInput.rate"
-									size="large"
-								/>
-							</el-form-item>
-						</div>
-					</el-collapse-item>
-					<el-collapse-item 
-						v-for="(outputItem, outputIndex) in linkItem.ffmpegConfig.config.ffmpegOutputList"
-						:key="outputIndex"
-						:name="outputIndex + 2"
-						class="output-list-box"
-					>
-						<template #title>
-							<div class="item-list-title">
-								<div class="item-title">
-									输出流 {{ outputIndex + 1 }}
-								</div>
+							<div>
+								<el-button type="primary" plain @click.stop="addOutputItem(linkIndex)">
+									添加输出流
+								</el-button>
 								<el-button 
 									type="danger" 
 									circle 
 									plain 
 									size="small"
-									@click.stop="removeOutputItem(linkIndex, outputIndex)"
+									@click.stop="removeLinkItem(index)"
 								>
 									<el-icon><i-ep-delete /></el-icon>
 								</el-button>
 							</div>
-						</template>
-						<el-collapse v-model="outputItem.outputItemCollapse">
-							<el-collapse-item  name=0>
-								<template #title>
-									<div class="item-title">
-										音频编码器
-									</div>
-								</template>
-								<div class="audio-codec-box">
-									<el-form-item prop="audioCodec" label="音频编码器">
-										<el-select v-model="outputItem.ffmpegAudioCodec.codecType" class="m-2" placeholder="Select" size="large">
+						</div>
+					</template>
+					<el-form-item prop="simpleInputServer" label="输入流服务器">
+						<el-select
+							v-model="linkItem.clientId"
+							collapse-tags
+							filterable
+							placeholder="推流服务器"
+							:loading="clientsLoading"
+							@visible-change="(flag) => loadClient(flag)"
+						>
+							<el-option
+								v-for="item in clientsRemote"
+								:key="item.id"
+								:label="item.label"
+								:value="item.id"
+							>
+							</el-option>
+						</el-select>
+					</el-form-item>
+					<el-collapse v-model="linkItem.linkItemCollapse">
+						<el-collapse-item name=0>
+							<template #title>
+								<div class="item-title">
+									代理
+								</div>
+							</template>
+							<div class="proxy-box">
+								<el-form-item prop="httpUrl" label="代理">
+									<el-input
+										v-model="linkItem.ffmpegConfig.config.ffmpegProxy.httpUrl"
+										placeholder="请输入代理url"
+										:disabled="linkItem.ffmpegConfig.config.ffmpegProxy.proxyType != 'HTTP_PROXY'"
+										class="input-with-select"
+									>
+										<template #prepend>
+											<el-select 
+												v-model="linkItem.ffmpegConfig.config.ffmpegProxy.proxyType" 
+												placeholder="选择代理模式" 
+												style="width: 150px"
+											>
+												<el-option
+													v-for="item in proxyType"
+													:key="item.key"
+													:label="item.label"
+													:value="item.value"
+												/>
+											</el-select>
+										</template>
+									</el-input>
+								</el-form-item>
+							</div>
+						</el-collapse-item>
+						<el-collapse-item name=1>
+							<template #title>
+								<div class="item-title">
+									输入流
+								</div>
+							</template>
+							<div class="input-box">
+								<div class="stream-type-button">
+									<el-radio-group v-model="linkItem.ffmpegConfig.config.ffmpegInput.showType" size="small">
+										<el-radio-button label="simple" >简易模式</el-radio-button>
+										<el-radio-button label="complex" >详细模式</el-radio-button>
+									</el-radio-group>
+								</div>
+								<template v-if="linkItem.ffmpegConfig.config.ffmpegInput.showType == 'simple'">
+									<el-form-item prop="complexInputUri" label="输入流地址">
+										<el-input v-model="linkItem.ffmpegConfig.config.ffmpegInput.inputUri" placeholder="预期地址" disabled/>
+									</el-form-item>
+									<el-form-item prop="simpleInputServer" label="输入流服务器">
+										<el-select
+											v-model="linkItem.ffmpegConfig.config.ffmpegInput.simple.ip"
+											collapse-tags
+											filterable
+											placeholder="推流服务器"
+											:loading="clientsLoading"
+											@visible-change="(flag) => loadClient(flag)"
+										>
 											<el-option
-												v-for="item in audioCodecs"
+												v-for="item in clientsRemote"
 												:key="item.key"
 												:label="item.label"
 												:value="item.value"
-											/>
+											>
+											</el-option>
 										</el-select>
 									</el-form-item>
-									<el-form-item prop="audioBitrate" label="比特率">
-										<el-input v-model="outputItem.ffmpegAudioCodec.bitrate" placeholder="请输入比特率" />
+									<el-form-item prop="simpleInputServer" label="输入流名称">
+										<el-input v-model="linkItem.ffmpegConfig.config.ffmpegInput.simple.name" placeholder="流名称" />
 									</el-form-item>
-								</div>
-							</el-collapse-item>
-							<el-collapse-item name=1>
-								<template #title>
-									<div class="item-title">
-										视频编码器
-									</div>
-								</template>
-								<div class="video-codec-box">
-									<el-form-item prop="videoCodec" label="视频编码器">
-										<el-select v-model="outputItem.ffmpegVideoCodec.codecType" class="m-2" placeholder="Select" size="large">
-											<el-option
-												v-for="item in videoCodecs"
-												:key="item.key"
-												:label="item.label"
-												:value="item.value"
-											/>
-										</el-select>
-									</el-form-item>
-									<el-form-item prop="videoBitrate" label="比特率">
-										<el-input v-model="outputItem.ffmpegVideoCodec.bitrate" placeholder="请输入比特率" />
-									</el-form-item>
-									<el-form-item prop="videoMaxrate" label="最大比特率">
-										<el-input v-model="outputItem.ffmpegVideoCodec.maxrate" placeholder="请输入比特率" />
-									</el-form-item>
-									<el-form-item prop="videoFps" label="帧率">
-										<el-input v-model="outputItem.ffmpegVideoCodec.fps" placeholder="请输入比特率" />
-									</el-form-item>
-								</div>
-							</el-collapse-item>
-							<el-collapse-item name=2>
-								<template #title>
-									<div class="item-title">
-										视频封装
-									</div>
-								</template>
-								<div class="format-box">
-									<el-form-item prop="format" label="视频封装格式">
-										<el-select v-model="outputItem.ffmpegFormat.formatType" class="m-2" placeholder="Select" size="large">
+									<el-form-item prop="simpleInputServer" label="输入协议">
+										<el-select v-model="linkItem.ffmpegConfig.config.ffmpegInput.simple.format" class="m-2" placeholder="选择输入流协议" >
 											<el-option
 												v-for="item in formatType"
 												:key="item.key"
 												:label="item.label"
-												:value="item.key"
+												:value="item.value"
 											/>
 										</el-select>
 									</el-form-item>
-									<template v-if="outputItem.ffmpegFormat.formatType == 'HLS'">
-										<el-form-item prop="hlsInitTime" label="初始片段长度">
-											<el-input v-model="outputItem.ffmpegFormat.hlsInitTime" placeholder="设置初始片段长度，默认为0" />
-										</el-form-item>
-										<el-form-item prop="hlsTime" label="片段长度">
-											<el-input v-model="outputItem.ffmpegFormat.hlsTime" placeholder="设置每个片段的时长，默认为2" />
-										</el-form-item>
-										<el-form-item prop="hlsListSize" label="引用片段数量">
-											<el-input v-model="outputItem.ffmpegFormat.hlsListSize" placeholder="设置在播放列表中引用的片段数量,默认为5，如果为0，则保留所有片段" />
-										</el-form-item>
-										<el-form-item prop="hlsDeleteThreshold" label="删除阈值">
-											<el-input v-model="outputItem.ffmpegFormat.hlsDeleteThreshold" placeholder="设置在保留在磁盘上的未引用段的数量" />
-										</el-form-item>
-										<el-form-item prop="hlsFlags" label="其他选项">
-											<el-checkbox-group v-model="outputItem.ffmpegFormat.ffmpegHlsFlags">
-												<el-checkbox  
-													v-for="item in hlsFlags"
-													:key="item.key"
-													:label="item.value"
-												> {{ item.label }} </el-checkbox>
-											</el-checkbox-group>
-										</el-form-item>
-									</template>
-									<template v-else-if="format == 'DASH'">
-
-									</template>
-								</div>
-							</el-collapse-item>
-							<el-collapse-item name=3>
-								<template #title>
-									<div class="item-title">
-										输出流
-									</div>
 								</template>
-								<div class="output-box">
-									<div style="margin-top: 20px">
-										<el-radio-group v-model="outputItem.ffmpegOutput.showType" size="small">
-											<el-radio-button label="simple" >简易模式</el-radio-button>
-											<el-radio-button label="complex" >详细模式</el-radio-button>
-										</el-radio-group>
+								<template v-else>
+									<el-form-item prop="complexInputUri" label="输入流地址">
+										<el-input v-model="linkItem.ffmpegConfig.config.ffmpegInput.inputUri" placeholder="请输入要推流视频地址" />
+									</el-form-item>
+								</template>
+								<el-form-item prop="rate" label="使用原生速率">
+									<el-switch
+										v-model="linkItem.ffmpegConfig.config.ffmpegInput.rate"
+										size="large"
+									/>
+								</el-form-item>
+							</div>
+						</el-collapse-item>
+						<el-collapse-item 
+							v-for="(outputItem, outputIndex) in linkItem.ffmpegConfig.config.ffmpegOutputList"
+							:key="outputIndex"
+							:name="outputIndex + 2"
+							class="output-list-box"
+						>
+							<template #title>
+								<div class="item-list-title">
+									<div class="item-title">
+										输出流 {{ outputIndex + 1 }}
 									</div>
-									<template v-if="outputItem.ffmpegOutput.showType == 'simple'">
-										<el-form-item prop="complexInputUri" label="输出流地址">
-											<el-input v-model="outputItem.ffmpegOutput.outputUri" disabled placeholder="预期地址" />
-										</el-form-item>
-										<el-form-item prop="simpleInputServer" label="输出流名称">
-											<el-input v-model="outputItem.ffmpegOutput.simple.name" placeholder="请输入输出流名称" />
-										</el-form-item>
-										<el-form-item prop="simpleInputServer" label="输出流协议">
-											<el-select v-model="outputItem.ffmpegOutput.simple.format" class="m-2" placeholder="选择协议" size="large">
+									<el-button 
+										type="danger" 
+										circle 
+										plain 
+										size="small"
+										@click.stop="removeOutputItem(linkIndex, outputIndex)"
+									>
+										<el-icon><i-ep-delete /></el-icon>
+									</el-button>
+								</div>
+							</template>
+							<el-collapse v-model="outputItem.outputItemCollapse">
+								<el-collapse-item  name=0>
+									<template #title>
+										<div class="item-title">
+											音频编码器
+										</div>
+									</template>
+									<div class="audio-codec-box">
+										<el-form-item prop="audioCodec" label="音频编码器">
+											<el-select v-model="outputItem.ffmpegAudioCodec.codecType" class="m-2" placeholder="Select" >
 												<el-option
-													v-for="item in formatType"
+													v-for="item in audioCodecs"
 													:key="item.key"
 													:label="item.label"
 													:value="item.value"
 												/>
 											</el-select>
 										</el-form-item>
-									</template>
-									<template v-else>
-										<el-form-item prop="complexInputUri" label="输出流地址">
-											<el-input v-model="outputItem.ffmpegOutput.outputUri" placeholder="请输入推流视频地址" />
+										<el-form-item prop="audioBitrate" label="比特率">
+											<el-input v-model="outputItem.ffmpegAudioCodec.bitrate" placeholder="请输入比特率" />
 										</el-form-item>
+									</div>
+								</el-collapse-item>
+								<el-collapse-item name=1>
+									<template #title>
+										<div class="item-title">
+											视频编码器
+										</div>
 									</template>
-								</div>
-							</el-collapse-item>
-						</el-collapse>
-					</el-collapse-item>
-				</el-collapse>
-			</el-collapse-item>
-		</el-collapse>
-		<el-button type="primary" plain @click="submit(formRef, data)" :loading="isLoading">
-			提交
-		</el-button>
-	</el-form>
-  <el-dialog v-model="insertDialog.show" :title="insertDialog.title">
-    <el-form :model="form">
-      <el-form-item label="添加在" :label-width="formLabelWidth">
-		   <el-select v-model="insertDialog.select" class="m-2" placeholder="位置" size="large">
-				<el-option
-					v-for="item in insertDialog.list"
-					:key="item.key"
-					:label="item.label"
-					:value="item.value"
-				/>
-			</el-select>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-		<span class="dialog-footer">
-			<el-button @click="insertDialog.show = false">取消</el-button>
-			<el-button type="primary" @click="insertDialog.afterConfirm(insertDialog.select)">确认</el-button>
-		</span>
-    </template>
+									<div class="video-codec-box">
+										<el-form-item prop="videoCodec" label="视频编码器">
+											<el-select v-model="outputItem.ffmpegVideoCodec.codecType" class="m-2" placeholder="Select" >
+												<el-option
+													v-for="item in videoCodecs"
+													:key="item.key"
+													:label="item.label"
+													:value="item.value"
+												/>
+											</el-select>
+										</el-form-item>
+										<el-form-item prop="videoBitrate" label="比特率">
+											<el-input v-model="outputItem.ffmpegVideoCodec.bitrate" placeholder="请输入比特率" />
+										</el-form-item>
+										<el-form-item prop="videoMaxrate" label="最大比特率">
+											<el-input v-model="outputItem.ffmpegVideoCodec.maxrate" placeholder="请输入比特率" />
+										</el-form-item>
+										<el-form-item prop="videoFps" label="帧率">
+											<el-input v-model="outputItem.ffmpegVideoCodec.fps" placeholder="请输入比特率" />
+										</el-form-item>
+									</div>
+								</el-collapse-item>
+								<el-collapse-item name=2>
+									<template #title>
+										<div class="item-title">
+											视频封装
+										</div>
+									</template>
+									<div class="format-box">
+										<el-form-item prop="format" label="视频封装格式">
+											<el-select v-model="outputItem.ffmpegFormat.formatType" class="m-2" placeholder="Select" >
+												<el-option
+													v-for="item in formatType"
+													:key="item.key"
+													:label="item.label"
+													:value="item.key"
+												/>
+											</el-select>
+										</el-form-item>
+										<template v-if="outputItem.ffmpegFormat.formatType == 'HLS'">
+											<el-form-item prop="hlsInitTime" label="初始片段长度">
+												<el-input v-model="outputItem.ffmpegFormat.hlsInitTime" placeholder="设置初始片段长度，默认为0" />
+											</el-form-item>
+											<el-form-item prop="hlsTime" label="片段长度">
+												<el-input v-model="outputItem.ffmpegFormat.hlsTime" placeholder="设置每个片段的时长，默认为2" />
+											</el-form-item>
+											<el-form-item prop="hlsListSize" label="引用片段数量">
+												<el-input v-model="outputItem.ffmpegFormat.hlsListSize" placeholder="设置在播放列表中引用的片段数量,默认为5，如果为0，则保留所有片段" />
+											</el-form-item>
+											<el-form-item prop="hlsDeleteThreshold" label="删除阈值">
+												<el-input v-model="outputItem.ffmpegFormat.hlsDeleteThreshold" placeholder="设置在保留在磁盘上的未引用段的数量" />
+											</el-form-item>
+											<el-form-item prop="hlsFlags" label="其他选项">
+												<el-checkbox-group v-model="outputItem.ffmpegFormat.ffmpegHlsFlags">
+													<el-checkbox  
+														v-for="item in hlsFlags"
+														:key="item.key"
+														:label="item.value"
+													> {{ item.label }} </el-checkbox>
+												</el-checkbox-group>
+											</el-form-item>
+										</template>
+										<template v-else-if="format == 'DASH'">
+
+										</template>
+									</div>
+								</el-collapse-item>
+								<el-collapse-item name=3>
+									<template #title>
+										<div class="item-title">
+											输出流
+										</div>
+									</template>
+									<div class="output-box">
+										<div class="stream-type-button">
+											<el-radio-group v-model="outputItem.ffmpegOutput.showType" size="small">
+												<el-radio-button label="simple" >简易模式</el-radio-button>
+												<el-radio-button label="complex" >详细模式</el-radio-button>
+											</el-radio-group>
+										</div>
+										<template v-if="outputItem.ffmpegOutput.showType == 'simple'">
+											<el-form-item prop="complexInputUri" label="输出流地址">
+												<el-input v-model="outputItem.ffmpegOutput.outputUri" disabled placeholder="预期地址" />
+											</el-form-item>
+											<el-form-item prop="simpleInputServer" label="输出流名称">
+												<el-input v-model="outputItem.ffmpegOutput.simple.name" placeholder="请输入输出流名称" />
+											</el-form-item>
+											<el-form-item prop="simpleInputServer" label="输出流协议">
+												<el-select v-model="outputItem.ffmpegOutput.simple.format" class="m-2" placeholder="选择协议" >
+													<el-option
+														v-for="item in formatType"
+														:key="item.key"
+														:label="item.label"
+														:value="item.value"
+													/>
+												</el-select>
+											</el-form-item>
+										</template>
+										<template v-else>
+											<el-form-item prop="complexInputUri" label="输出流地址">
+												<el-input v-model="outputItem.ffmpegOutput.outputUri" placeholder="请输入推流视频地址" />
+											</el-form-item>
+										</template>
+									</div>
+								</el-collapse-item>
+							</el-collapse>
+						</el-collapse-item>
+					</el-collapse>
+				</el-collapse-item>
+			</el-collapse>
+			<div class="submit-button-box">
+				<el-button class="submit-button" type="primary" plain @click="submit(formRef, data)" :loading="isLoading">
+					提交
+				</el-button>
+			</div>
+		</el-form>
+	</div>
+	<el-dialog v-model="insertDialog.show" :title="insertDialog.title">
+		<el-form :model="form">
+		<el-form-item label="添加在" :label-width="formLabelWidth">
+			<el-select v-model="insertDialog.select" class="m-2" placeholder="位置">
+					<el-option
+						v-for="item in insertDialog.list"
+						:key="item.key"
+						:label="item.label"
+						:value="item.value"
+					/>
+				</el-select>
+		</el-form-item>
+		</el-form>
+		<template #footer>
+			<span class="dialog-footer">
+				<el-button @click="insertDialog.show = false">取消</el-button>
+				<el-button type="primary" @click="insertDialog.afterConfirm(insertDialog.select)">确认</el-button>
+			</span>
+		</template>
   </el-dialog>
 
 </template>
 <style scoped>
+.link-form-box {
+	margin: 10px 20px;
+}
 .link-list-box .el-collapse-item .item-title {
 	padding-left: 2em;
 }
 .link-list-box .output-list-box .el-collapse-item .item-title {
+	padding-left: 4em;
+}
+.link-list-box .el-collapse-item .el-form-item {
+	padding-left: 2em;
+}
+.link-list-box .output-list-box .el-collapse-item .el-form-item {
 	padding-left: 4em;
 }
 .item-list-title {
@@ -705,4 +716,26 @@
     justify-content: space-between;
     padding-right: 15px;
 }
+.link-name-box {
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+}
+.link-name-input {
+	flex-grow: 1;
+    margin-right: 30px;
+}
+.stream-type-button {
+	margin-bottom: 20px;
+}
+:deep(.el-collapse-item__content) {
+	padding: 15px 0px 
+}
+.submit-button-box {
+	margin-top: 20px;
+}
+.submit-button {
+	width: 200px;
+}
+
 </style>

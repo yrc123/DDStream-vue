@@ -27,9 +27,6 @@
 					<el-icon><i-ep-user-filled /></el-icon>用户信息
 				</el-menu-item>
 			</el-sub-menu>
-			<el-menu-item index="/console/files">
-				<el-icon><i-ep-files /></el-icon>文件
-			</el-menu-item>
 			<el-menu-item index="/console/setting">
 				<el-icon><i-ep-setting /></el-icon>设置
 			</el-menu-item>

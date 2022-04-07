@@ -1,9 +1,8 @@
 import axios from "axios";
 import Message from "js/Message";
 import { useCookies } from "vue3-cookies";
-import { useRouter } from 'vue-router';
+import { router } from 'router/index';
 
-const router = useRouter()
 function getToken() {
 	if (localStorage.hasOwnProperty('satoken')) {
 		return localStorage.getItem('satoken')
