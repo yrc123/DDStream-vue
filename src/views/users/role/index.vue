@@ -93,7 +93,7 @@
 				<el-button type="primary" plain @click="createFormVisible.flag = true">添加角色</el-button>
 			</div>
 			<div class="button-right-box">
-				<el-tooltip content="刷新" effect="light" show-after=1000>
+				<el-tooltip content="刷新" effect="light" :show-after="1000">
 					<el-button circle @click="getTableData">
 						<el-icon ><i-ep-refresh-right /></el-icon>
 					</el-button>
@@ -127,7 +127,6 @@
 			ref="multipleTableRef"
 			:data="tableData"
 			v-loading="tableLoading"
-			@selection-change="handleSelectionChange"
 			max-height="621"
 			>
 			<el-table-column property="id" label="角色名"  show-overflow-tooltip/>
@@ -168,7 +167,7 @@
 			</el-table-column>
 			<el-table-column fixed="right" label="操作" width="120">
 				<template #default="scope">
-					<el-tooltip content="删除" effect="light" show-after=1000>
+					<el-tooltip content="删除" effect="light" :show-after="1000">
 						<el-button type="text" style="color:#f89898" @click.stop="deleteBox(scope.$index)">
 							<el-icon><i-ep-delete /></el-icon>
 						</el-button>

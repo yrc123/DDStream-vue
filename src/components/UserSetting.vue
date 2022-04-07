@@ -102,7 +102,6 @@
 	<el-dialog 
 		v-model="props.formVisible.flag" 
 		title="修改信息"
-		v-loading="dialogLoading"
 		>
 		<el-form 
 			ref="formRef" 
@@ -110,6 +109,7 @@
 			:rules="rules"
 			label-position="left"
 			label-width="auto"
+			v-loading="dialogLoading"
 			>
 			<el-form-item prop="username"  label="用户名">
 				<el-input v-model="data.username" disabled />

@@ -22,6 +22,16 @@
 		searchSelect:"",
 		searchInput:"",
 	})
+	const linkInfoVisible = reactive({
+		flag:false
+	})
+	const logInfoVisible = reactive({
+		flag:false
+	})
+	// <LogInfo :formVisible="logInfoVisible" :clientId="showClientId" :name="showName"/>
+	const showLinkId = ref("")
+	const showClientId = ref("")
+	const showName = ref("")
 	function editLink(index) {
 		router.push({
 			name: 'linksEdit',
@@ -31,11 +41,12 @@
 		})
 	}
 	function startPush(index) {
-		//TODO: 启动查看推流界面
 		openConfirmBox("确认启动推流？",()=>{
 			service.startFFmpegLink({id: tableData.value[index].id})
 				.then((res) => {
 					Message.info("开始推流")
+					linkInfoVisible.flag = true
+					showLinkId.value = tableData.value[index].id
 				})
 		})
 	}
@@ -43,16 +54,20 @@
 		openConfirmBox("确认停止推流？",()=>{
 			service.stopFFmpegLink({id: tableData.value[index].id})
 				.then((res) => {
-					//TODO: 启动查看推流界面
 					Message.success("停止推流")
+					linkInfoVisible.flag = true
+					showLinkId.value = tableData.value[index].id
 				})
 		})
 	}
-	function linkStatus(index) {
-		service.getFFmpegLinkStatus({id: tableData.value[index].id})
-			.then((res) => {
-				console.log(res)
-			})
+	function showLinkStatus(index) {
+		showLinkId.value = tableData.value[index].id
+		linkInfoVisible.flag = true
+	}
+	function showLogInfo(client) {
+		showClientId.value = client.clientId
+		showName.value = client.name
+		logInfoVisible.flag = true
 	}
 	function deleteBox(index) {
 		openConfirmBox("确认删除链路？",()=>{
@@ -73,7 +88,6 @@
 		postData.searchMap[searchCondition.searchSelect] = searchCondition.searchInput
 		service.searchFFmpegLink(postData)
 			.then((res) => {
-				console.log(res)
 				tableLoading.value = false
 				tableData.value = res.data.records
 				page.total = res.data.total
@@ -117,7 +131,7 @@
 						</el-select>
 					</template>
 					<template #append>
-						<el-tooltip content="刷新" effect="light" show-after=1000>
+						<el-tooltip content="刷新" effect="light" :show-after="1000">
 							<el-button @click="getTableData">
 								<el-icon><i-ep-search /></el-icon>
 							</el-button>
@@ -147,27 +161,27 @@
 			</el-table-column>
 			<el-table-column fixed="right" label="操作" width="160">
 				<template #default="scope">
-					<el-tooltip content="启动" effect="light" show-after=1000>
+					<el-tooltip content="启动" effect="light" :show-after="1000">
 						<el-button type="text" @click.stop="startPush(scope.$index)">
 							<el-icon><i-ep-video-play /></el-icon>
 						</el-button>
 					</el-tooltip>
-					<el-tooltip content="停止" effect="light" show-after=1000>
+					<el-tooltip content="停止" effect="light" :show-after="1000">
 						<el-button type="text" style="color:#f89898" @click.stop="stopPush(scope.$index)">
 							<el-icon><i-ep-video-pause /></el-icon>
 						</el-button>
 					</el-tooltip>
-					<el-tooltip content="详情" effect="light" show-after=1000>
-						<el-button type="text" @click.stop="linkStatus(scope.$index)">
+					<el-tooltip content="详情" effect="light" :show-after="1000">
+						<el-button type="text" @click.stop="showLinkStatus(scope.$index)">
 							<el-icon><i-ep-view /></el-icon>
 						</el-button>
 					</el-tooltip>
-					<el-tooltip content="编辑" effect="light" show-after=1000>
+					<el-tooltip content="编辑" effect="light" :show-after="1000">
 						<el-button type="text" @click.stop="editLink(scope.$index)">
 							<el-icon><i-ep-edit /></el-icon>
 						</el-button>
 					</el-tooltip>
-					<el-tooltip content="删除" effect="light" show-after=1000>
+					<el-tooltip content="删除" effect="light" :show-after="1000">
 						<el-button type="text" style="color:#f89898" @click.stop="deleteBox(scope.$index)">
 							<el-icon><i-ep-delete /></el-icon>
 						</el-button>
@@ -184,7 +198,8 @@
 				@update:currentPage="getTableData()"></el-pagination>
 		</div>
 	</div>
-
+	<LinkInfo :formVisible="linkInfoVisible" :linkId="showLinkId" @getLog="showLogInfo($event)"/>
+	<LogInfo :formVisible="logInfoVisible" :clientId="showClientId" :name="showName"/>
 </template>
 <style scoped>
 .user-table-box {

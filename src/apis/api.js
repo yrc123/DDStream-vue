@@ -102,6 +102,9 @@ const getFFmpegLink = (data) => {
 const getFFmpegLinkStatus = (data) => {
 	return instance.get(`/ffmpeg-link/${data.id}:status`)
 }
+const getProcessLog = (data) => {
+	return instance.get(`/client/${data.clientId}/ffmpeg/log/${data.name}`)
+}
 export default {
 	login,
 	logout,
@@ -137,4 +140,5 @@ export default {
 	getFFmpegLink,
 	getFFmpegLinkStatus,
 	searchFFmpegLink,
+	getProcessLog,
 }

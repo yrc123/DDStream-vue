@@ -66,9 +66,12 @@
 		}
 	}
 	const data = ref({})
+	const emits = defineEmits(['beforeLoaded','afterLoaded'])
+	emits('beforeLoaded')
 	watchEffect(() => {
 		const id = route.params.id
 		if (id == null) {
+			emits('afterLoaded')
 			data.value = new FFmpegLink()
 		} else {
 			getData(id)
@@ -105,11 +108,9 @@
 						})
 					})
 				})
+				emits('afterLoaded')
 			})
 	}
-	const emits = defineEmits(['beforeLoaded','afterLoaded'])
-	emits('beforeLoaded')
-	emits('afterLoaded')
 	const formRef = ref()
 	const isLoading = ref(false)
 

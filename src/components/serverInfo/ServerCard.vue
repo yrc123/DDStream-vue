@@ -49,17 +49,17 @@ import ServerEditForm from "./ServerEditForm.vue";
 			<div class="card-header">
 				<span>{{ client.id }}</span>
 				<div class="button-box">
-					<el-tooltip content="刷新" effect="light" show-after=1000>
+					<el-tooltip content="刷新" effect="light" :show-after="1000">
 						<el-button type="primary" circle plain @click.stop="emits('refresh')">
 							<el-icon ><i-ep-refresh-right /></el-icon>
 						</el-button>
 					</el-tooltip>
-					<el-tooltip content="编辑" effect="light" show-after=1000>
+					<el-tooltip content="编辑" effect="light" :show-after="1000">
 						<el-button type="primary" circle plain @click.stop="formVisible.flag = true">
 							<el-icon><i-ep-edit /></el-icon>
 						</el-button>
 					</el-tooltip>
-					<el-tooltip content="删除" effect="light" show-after=1000>
+					<el-tooltip content="删除" effect="light" :show-after="1000">
 						<el-button type="danger" circle plain @click.stop="confirmBox">
 							<el-icon><i-ep-delete /></el-icon>
 						</el-button>
