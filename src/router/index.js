@@ -1,4 +1,5 @@
 import {createRouter, createWebHashHistory} from 'vue-router';
+import HomeView from 'views/home/index.vue'
 import MainView from 'views/main/index.vue'
 import AuthView from 'views/auth/index.vue'
 import UserView from 'views/users/user/index.vue'
@@ -8,18 +9,12 @@ import LinkView from 'views/link/index.vue'
 import LinkEditView from 'views/link/LinkEdit.vue'
 import SettingView from 'views/setting/index.vue'
 import ServerCardView from 'views/serverInfo/index.vue'
-import HelloWorld from 'components/main/HelloWorld.vue'
 
 const routes = [
 	{
 		path: "/console",
 		component: MainView,
 		children: [
-			{
-				name: 'main',
-				path: '',
-				component: HelloWorld,
-			},
 			{
 				name: 'servers',
 				path: 'servers',
@@ -66,6 +61,11 @@ const routes = [
 		name: 'safe',
 		path: '/safe',
 		component: SafeView,
+	},
+	{
+		name: 'home',
+		path: '/home',
+		component: HomeView,
 	},
 ]
 

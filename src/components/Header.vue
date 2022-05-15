@@ -49,10 +49,10 @@ import { computed } from '@vue/runtime-core';
 		service.logout()
 			.then((res) => {
 				Message.success("登出成功", () => router.go(0))
+				localStorage.removeItem("satoken")
+				localStorage.removeItem("userInfo")
+				sessionStorage.removeItem("satoken")
 			})
-		localStorage.removeItem("satoken")
-		localStorage.removeItem("userInfo")
-		sessionStorage.removeItem("satoken")
 	}
 
 </script>
@@ -71,7 +71,7 @@ import { computed } from '@vue/runtime-core';
 				<circle cx="12" cy="9" r="3" fill="#FFF"/><circle cx="11.5" cy="8.5" r="1.5"/><path fill="#BBDDF5" d="M35 5H15.962c2.068 2.286 4.742 6.465-.037 12H35c2.209 0-4-3.791-4-6s6.209-6 4-6z"/>
 			</svg>
 			<div class="logo-title">
-				羊肉串
+				推流编排系统
 			</div>
 		</div>
 		<div class="toolbar">

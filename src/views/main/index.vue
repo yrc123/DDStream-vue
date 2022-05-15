@@ -19,7 +19,7 @@ import { ref } from "@vue/reactivity";
 						<router-view @after-loaded="isLoading = false" @before-loaded="isLoading = true"></router-view>
 					</el-main>
 					<el-divider></el-divider>
-					<el-footer>Footer</el-footer>
+					<el-footer><Footer /></el-footer>
 				</el-scrollbar>
 			</el-container>
 		</el-container>

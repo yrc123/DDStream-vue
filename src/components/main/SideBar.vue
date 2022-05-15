@@ -7,9 +7,6 @@
 <template>
     <el-scrollbar class="scrollbar" style="">
 		<el-menu :router=true style="border-right:none;">
-			<el-menu-item index="/console">
-				<el-icon><i-ep-compass /></el-icon>首页
-			</el-menu-item>
 			<el-menu-item index="/console/servers">
 				<el-icon><i-clarity-nodes-line /></el-icon>服务
 			</el-menu-item>

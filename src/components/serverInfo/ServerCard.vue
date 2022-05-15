@@ -6,6 +6,7 @@ import { openConfirmBox } from "js/common"
 import ServerCardInfo from "./ServerCardInfo.vue";
 import ServerCardDetail from "./ServerCardDetail.vue"
 import ServerEditForm from "./ServerEditForm.vue";
+import service from 'apis/api'
 
 	const props = defineProps({
 		client:{
@@ -29,12 +30,10 @@ import ServerEditForm from "./ServerEditForm.vue";
 	const formVisible = reactive({
 		flag: false
 	})
-	const confirmBox = () => {
-		//TODO: 完成删除接口
+	const confirmBox = (id) => {
 		openConfirmBox("确认删除？相关记录将会被级联删除！",()=>{
 			emits('updated')
-		}, ()=>{
-
+			service.deleteClient({clientId: id})
 		})
 	}
 	watch(() => props.client.up, (newValue, oldValue) => {
@@ -60,7 +59,7 @@ import ServerEditForm from "./ServerEditForm.vue";
 						</el-button>
 					</el-tooltip>
 					<el-tooltip content="删除" effect="light" :show-after="1000">
-						<el-button type="danger" circle plain @click.stop="confirmBox">
+						<el-button type="danger" circle plain @click.stop="confirmBox(client.id)">
 							<el-icon><i-ep-delete /></el-icon>
 						</el-button>
 					</el-tooltip>
